@@ -62,6 +62,7 @@ max_depth = 1
 soft_shadows = True
 light_range = 3
 shadow_test_values = [1,-1,0]
+max_shadow_detail = True
 
 camera = np.array([0, 0, 1])
 ratio = float(width) / height
@@ -97,7 +98,7 @@ for i, y in enumerate(np.linspace(screen[1], screen[3], height)):
         test_light_flag = 0
 
         if soft_shadows:
-
+            
             for a in list(itertools.product(shadow_test_values, shadow_test_values)):
 
                 test_lighting_pos = [light['center'][0] + light['radius'] * a[0], light['center'][1] + light['radius'] * a[1], light['center'][2]]
@@ -107,6 +108,10 @@ for i, y in enumerate(np.linspace(screen[1], screen[3], height)):
                 if shadow_test_flag is None:
                     break
                 elif shadow_test_flag is True:
+                    if max_shadow_detail is True:
+                        break
+                        #This makes it check every light point when the pixel is shaded even a little bit
+                        #It doesn't end up skipping the full soft shadow proccess if the check shows it's all shadowed
                     test_light_flag += 1
                 elif shadow_test_flag is False:
                     test_light_flag -= 1
@@ -128,7 +133,7 @@ for i, y in enumerate(np.linspace(screen[1], screen[3], height)):
 
                         if shadow_check_flag is True:
                             reflection -= 1 / (light_range*2+1)**2
-                        if shadow_check_flag is None:
+                        elif shadow_check_flag is None:
                             break
         
 
