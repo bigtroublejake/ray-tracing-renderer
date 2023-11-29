@@ -201,3 +201,4 @@ for i, y in enumerate(np.linspace(screen[1], screen[3], height)):
 plt.imsave('image.png', image)
 print(total_s, total_ns)
 print(time.perf_counter() - start_time)
+plt.imshow(image)
